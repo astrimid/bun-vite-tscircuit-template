@@ -1,0 +1,15 @@
+{
+  "name": "create-vite-tscircuit",
+  "version": "1.0.0",
+  "type": "module",
+  "bin": {
+    "create-vite-tscircuit": "./index.ts"
+  },
+  "files": [
+    "index.ts",
+    "templates"
+  ],
+  "devDependencies": {
+    "@types/bun": "latest"
+  }
+}
