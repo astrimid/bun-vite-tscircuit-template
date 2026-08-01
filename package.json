@@ -4,7 +4,7 @@
   "type": "module",
   "repository": {
     "url": "https://github.com/astrimid/bun-vite-tscircuit-template"
-  }
+  },
   "bin": {
     "create-vite-tscircuit": "./index.ts"
   },
