@@ -1,6 +1,6 @@
 {
   "name": "create-vite-tscircuit",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "type": "module",
   "repository": {
     "url": "https://github.com/astrimid/bun-vite-tscircuit-template"
