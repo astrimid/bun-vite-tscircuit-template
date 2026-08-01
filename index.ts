@@ -11,7 +11,8 @@ Usage:
   create-vite-tscircuit [app-name] [options]
 
 Arguments:
-  app-name                 Directory/name for the new project (default: "test-app")
+  app-name                 Directory/name for the new project
+                            (if omitted, you'll be prompted)
 
 Options:
   -t, --tgz <path>         Install @tscircuit/runframe from a local .tgz artifact
@@ -46,13 +47,48 @@ if (values.help) {
 }
 
 if (values.version) {
-  // pull from your own package.json if you want this dynamic
   console.log("create-vite-tscircuit 0.1.0");
   process.exit(0);
 }
 
-const appName = positionals[0] || "test-app";
+function isValidAppName(name: string): boolean {
+  // reject empty, whitespace-only, flag-like, or path-separator-containing names
+  return /^[a-zA-Z0-9._-]+$/.test(name);
+}
+
+let appName = positionals[0];
+
+if (!appName) {
+  // interactive prompt — Bun's global prompt() mirrors the browser API
+  const input = prompt("Project name:", "test-app");
+
+  if (input === null) {
+    // user hit Ctrl+C / EOF
+    console.error("\nAborted: no project name provided.");
+    process.exit(1);
+  }
+
+  appName = input.trim();
+
+  if (appName === "") {
+    console.error("Error: project name cannot be empty.");
+    process.exit(1);
+  }
+}
+
+if (!isValidAppName(appName)) {
+  console.error(
+    `Error: "${appName}" is not a valid project name (use letters, numbers, "-", "_", ".").`,
+  );
+  process.exit(1);
+}
+
 const tgzArg = values.tgz;
+
+if (existsSync(join(process.cwd(), appName))) {
+  console.error(`Error: directory "${appName}" already exists.`);
+  process.exit(1);
+}
 
 if (appName.startsWith("-")) {
   console.error(`Error: "${appName}" looks like a flag, not an app name.`);
